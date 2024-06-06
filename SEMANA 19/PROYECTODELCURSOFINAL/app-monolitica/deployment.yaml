@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-monolitica
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-monolitica
+  template:
+    metadata:
+      labels:
+        app: app-monolitica
+    spec:
+      containers:
+      - name: app-monolitica
+        image: jaerc09/app-monolitica-app-monolitica1:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"

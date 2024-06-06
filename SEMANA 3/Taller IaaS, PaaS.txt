@@ -1,0 +1,2 @@
+Repositorio: https://github.com/engelsruiz09/API_CRUD_MYSQL_NODE.JS.git
+Integrantes: Julio Ruiz y Eddie Girón

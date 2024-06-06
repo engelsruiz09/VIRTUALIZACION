@@ -1,0 +1,85 @@
+version: '3.7'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.15.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    build:
+        context: ./filebeat
+    container_name: filebeat
+    command: filebeat -e -strict.perms=false
+    volumes:
+        - ./app-monolitica-logs:/src/logs
+    depends_on:
+        - elasticsearch
+        - kibana
+
+  app-monolitica1:
+    build:
+      context: C:\\Users\\julio\\Desktop\\app-monolitica
+      dockerfile: Dockerfile
+    environment:
+      - PORT=8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./app-monolitica-logs:/src/logs
+    deploy:
+      resources: #vertical 
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+
+  app-monolitica2:
+    build:
+      context: C:\\Users\\julio\\Desktop\\app-monolitica
+      dockerfile: Dockerfile
+    environment:
+      - PORT=8082
+    ports:
+      - "8082:8082"
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./app-monolitica-logs:/src/logs
+    deploy:
+      resources: #vertical
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+
+  app-monolitica3:
+    build:
+      context: C:\\Users\\julio\\Desktop\\app-monolitica
+      dockerfile: Dockerfile
+    environment:
+      - PORT=8083
+    ports:
+      - "8083:8083"
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./app-monolitica-logs:/src/logs
+    deploy:
+      resources: #vertical
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+
+volumes:
+    elasticsearch_data:
+        driver: local
